@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>构造函数与普通函数的唯一区别</title>
+	<script>
+		/*
+			构造函数与普通函数的唯一区别:调用方式不同
+				1>任何函数，只要通过new操作符来调用，它就可以作为构造函数；
+				2>而任何构造函数，如果不通过new 操作符来调用，那它跟普通函数无区别。
+		 */
+		
+		// 普通函数
+		function createStu(name,age,gender,sex){
+			var o = {};
+			o.name = name;
+			o.age = age;
+			o.gender = gender;
+			o.sex = sex;
+			
+			return o;
+		}
+
+		//普通函数的调用
+		var stu1 = createStu('罗棋',16,'男',true);
+
+		// 把普通函数当构造函数来使用
+		var s1 = new createStu('罗棋',16,'男',true);console.log('s1:',s1);
+
+
+		// 构造函数
+		function Student(name,age,gender,sex){
+			// var o = {}
+			this.name = name;
+			this.age = age;
+			this.gender = gender;
+			this.sex = sex;
+
+			// return o
+		}
+
+		// 构造函数的调用
+		var stu1 = new Student('罗棋',16,'男',true);
+		console.log('构造函数stu1',stu1);
+		// 把构造函数当普通函数来用
+		var s1 = Student('罗棋',16,'男',true);console.log('构造函数s1:',s1)
+	</script>
+</head>
+<body>
+	
+</body>
+</html>

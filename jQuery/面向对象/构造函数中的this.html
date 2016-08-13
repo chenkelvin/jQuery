@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>构造函数与普通函数的唯一区别</title>
+	<script>
+		/*
+			**this作为JS的关键字，有特殊的含义，代表了当前对象，而当前对象是谁，由函数执行时所处的环境来决定
+				1>用new关键字执行：this指向生成的实例对象
+				2>普通函数执行：this指向调用函数的对象
+
+
+			每个函数都有一个this
+			通过new关键字生成的对象称为：实例
+			**用new关键字生成的实例，会复制构造函数内所有的属性和方法
+		 */
+		window.onload = function(){
+			console.log(this); //==> window
+			var btnCheck = document.getElementById('btnCheck');
+			console.log(btnCheck);
+
+			btnCheck.onclick = function(){
+				console.log(this) //==> #btnCheck
+			}
+
+			console.log('start');
+			setTimeout(function(){
+				console.log('setTimeout:',this);
+				console.log('3秒后执行');
+			},3000);
+
+			// 内存中的变量（数据）
+			// 基本数据类型
+			var num1 = 10;
+			var str = 'html5';
+
+			// 引用数据类型
+			var arr = [1,2,3];
+			var arr2 = arr;
+			arr[0] = 100;
+		}
+
+		// 创建一个构造函数
+		function Person(name,nickName,weight,hobby){
+			this.name = name;
+			this.nickName = nickName;
+			this.weight = weight;
+			this.hobby = hobby;
+			this.say = function(){
+				console.log(this);
+			}
+			console.log(this);
+		}
+
+		// 在原型对象中添加方法
+		// Person.prototype ==> {}
+		Person.prototype.getHobby = function(){
+			console.log(this.hobby);
+		}
+
+		// 造人计划
+		var p1 = new Person('刘备','硫磺',80,['哭','泡妞','编草鞋']);
+		var p2 = new Person('关羽','关公',100,['耍大刀','吹牛逼']);
+		var p3 = new Person('张飞','张三',120,['喝酒','打架']);
+		var p4 = new Person('赵云','赵四',90,['跳舞','烧烤']);
+
+
+	</script>
+</head>
+<body>
+	<button id="btnCheck">点我</button>
+</body>
+</html>

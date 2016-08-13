@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>匿名函数自运行</title>
+	<script>
+		// 具名函数
+		function sum(a){
+			console.log(a)
+		}
+		// 具名函数调用
+		sum(10);
+
+
+		// 匿名函数自运行
+		// 匿名函数也可以传参
+		(function(n){
+			console.log(n);
+		})(-666);
+
+		(function(){
+			console.log(888);
+		}());
+
+		+function(){
+			console.log(999);
+		}();
+	</script>
+</head>
+<body>
+	
+</body>
+</html>

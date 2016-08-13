@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>原型式继承</title>
+	<script>
+		// 原型式继承
+		function object(o){
+			function F(){};//创建一个临时的构造函数
+			F.prototype = o;
+			return new F();//返回一个实例
+		}
+
+		function Person(name,age,gender){
+			this.name = name;
+			this.age = age;
+			this.gender =gender;
+		}
+
+		Person.prototype.showSex = function(){
+			console.log('展示'+this.name+'性感的一面~')
+		}
+		Person.prototype.sleep = function(){
+			console.log('你见过过凌晨4点的广州么');
+		}
+
+		function Chinese(){
+			Person.apply(this,arguments);
+			this.type = '中国人';
+		}
+		// Chinese.prototype = new Person();//原型链继承
+		// Chinese.prototype = object(Person.prototype);
+		Chinese.prototype = Object.create(Person.prototype);//
+
+		var hht = new Chinese('黄海涛',18,'男');
+		console.log(hht);
+
+		function Japanese(){
+			Person.apply(this,arguments);
+			this.type = '小日本人';
+		}
+	</script>
+</head>
+<body>
+	
+</body>
+</html>

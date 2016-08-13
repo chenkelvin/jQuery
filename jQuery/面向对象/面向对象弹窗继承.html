@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>面向对象弹窗</title>
+    <style type="text/css">
+    body{overflow:hidden;}
+    ul {
+        margin: 0;
+        padding: 0;
+        list-style: none;
+    }
+    .popover{position:absolute;left:200px;top:100px;z-index:101;width:300px;height:200px;border:1px solid #ccc;background-color:#fff;}
+    .popover .title{height:40px;line-height:40px;padding:0 10px;background:linear-gradient(#fff, #efefef 5%, #ddd);}
+    .popover .content{padding:15px;}
+    .popover .btn-close{position:absolute;right:0;top:0;width:40px;height:40px;line-height:40px;text-align:center;}
+    .popover .btn-close:hover{background-color:#c00;color:#fff;}
+    .popover .footer{position:absolute;left:0;bottom:0;right:0;padding:20px;text-align:center;}
+    .footer button{display:inline-block;margin:0 5px;padding:5px 15px;border:1px solid #ddd;background:linear-gradient(#efefef, #cfcfcf);}
+    .overlay{position:fixed;left:0;top:0;right:0;bottom:0;z-index:100;background-color:#000;opacity:0.2;}
+    </style>
+    <script>
+    /*
+        面向对象弹窗
+            1）创建构造函数Popover
+                设置弹窗属性
+                width,height：宽高
+                position：可设置显示位置（居中center，右下角rb，左下角lb，{left:xx,top:xx}），浏览器窗口大小改变时自适应
+                title：标题内容，可设置是否显示标题
+                drag,是否可拖拽（默认为true）
+                overlay：是否显示遮罩层，并能设置透明度
+            2）给原型对象添加方法
+                原型对象的方法能被所有Popover的实例共享
+                init(),初始化
+                show(),显示
+                close()关闭
+            3）创建弹窗实例
+     */
+    
+    // 1）创建构造函数Popover
+    function Popover(opt){
+        // 设置属性和默认值
+        var def = {
+            width:480,
+            height:300,
+            position:'center',
+            title:'这是一个标题',
+            content:'这不是一个内容',
+            drag:true,
+            overlay:0.5
+        }
+        // 遍历opt，覆盖defaults
+        /*for(var attr in defaults){
+            if(opt[attr] !== undefined){
+                defaults[attr] = opt[attr];
+            }
+        }*/
+        for(var attr in opt){
+            def[attr] = opt[attr];
+        }
+        this.width = def.width;
+        this.height = def.height;
+        this.position = def.position;
+        this.title = def.title;
+        this.content = def.content;
+        this.drag = def.drag;
+        this.overlay = def.overlay;
+
+        // this.init();
+    }
+
+    // 2）给原型对象添加方法
+    
+    // 初始化函数：用于生产html结构
+    Popover.prototype.init = function(){
+        var self = this;
+
+        // 生成弹窗外框
+        var pop = document.createElement('div');
+        pop.className = 'popover';
+
+        // 生成标题
+        var title = document.createElement('div');
+        title.className = 'title';
+        title.innerHTML = this.title;
+
+         // 生成弹窗内容
+        var content = document.createElement('div');
+        content.className = 'content';
+        content.innerHTML = this.content;
+
+        // 生成关闭按钮
+        var btnClose = document.createElement('span');
+        btnClose.className = 'btn-close';
+        btnClose.innerHTML = '&times;';//html实体标签
+
+        // 遮罩层
+        var overlay = document.createElement('div');
+        overlay.className = 'overlay';
+        console.log(btnClose);
+        // 给按钮绑定点击事件
+        // onclick = onmousedow + onmouseup
+        btnClose.onclick = function(e){
+            self.close();
+        }
+        btnClose.onmousedown = function(e){
+            e.stopPropagation();
+        }
+
+
+        // 设置样式
+        pop.style.width = this.width + 'px';
+        pop.style.height = this.height + 'px';
+
+
+        // 拖拽效果
+        if(this.drag){
+            /*
+                1）绑定鼠标按下(onmousedown)事件
+                    1>记录按下时鼠标相对于弹窗的位置
+                    2>给document绑定onmousemove事件
+                        改变弹窗的top,left值
+                2）绑定鼠标弹开(onmouseup)事件
+                    移除document的onmousemove事件
+             */
+             // 1）绑定鼠标按下(onmousedown)事件
+            pop.onmousedown = function(e){console.log('pop mousedown')
+                e = e || window.event;
+                // 1>记录按下时鼠标相对于弹窗的位置
+                var pos = {x:e.offsetX,y:e.offsetY};
+
+                // 2>给document绑定onmousemove事件
+                document.onmousemove = function(evt){
+                    evt = evt || window.event;
+                    pop.style.left = evt.clientX - pos.x + 'px';
+                    pop.style.top = evt.clientY - pos.y + 'px';
+                }
+
+                // 阻止选中文字
+                e.preventDefault();//e.returnValue = false;
+            }
+
+            // 2）绑定鼠标弹开(onmouseup)事件
+            pop.onmouseup = function(){
+                // 移除document的onmousemove事件
+                document.onmousemove = null;
+            }
+        }
+
+        if(this.title !== false){
+            pop.appendChild(title);
+        }
+        pop.appendChild(content);
+        pop.appendChild(btnClose);
+
+        document.body.appendChild(pop);
+        if(this.overlay) document.body.appendChild(overlay);
+
+        this.ele = pop;
+        this.overlay = overlay;
+
+        // 定位
+        this.setPosition();
+
+        window.onresize = function(){
+            self.setPosition();
+        }
+    }
+    Popover.prototype.show = function(){
+
+    }
+
+
+    // 弹窗定位
+    Popover.prototype.setPosition = function(){
+        var pop = this.ele;
+        var pos = {};
+        if(this.position == 'center'){
+            pos.left = (document.documentElement.clientWidth - pop.offsetWidth)/2;
+            pos.top = (document.documentElement.clientHeight - pop.offsetHeight)/2;
+        }else if(this.position == 'rb'){
+            pos.left = 'auto';
+            pos.top = 'auto';
+            pos.right = 0;
+            pos.bottom = 0;
+        }else if(this.position == 'lb'){
+            pos.left = 0;
+            pos.top = 'auto';
+            pos.right = 'auto';
+            pos.bottom = 0;
+        }else if(typeof(this.position) == 'object'){
+            pos = this.position;
+        }
+
+        if(pos.left == 'auto'){
+            pop.style.left = pos.left;
+        }else{
+            pop.style.left = pos.left +'px';
+        }
+
+        if(pos.right == 'auto'){
+            pop.style.right = pos.right;
+        }else{
+            pop.style.right = pos.right +'px';
+        }
+
+        if(pos.top == 'auto'){
+            pop.style.top = pos.top;
+        }else{
+            pop.style.top = pos.top +'px';
+        }
+        if(pos.bottom == 'auto'){
+            pop.style.bottom = pos.bottom;
+        }else{
+            pop.style.bottom = pos.bottom +'px';
+        }
+    }
+
+    // 关闭弹窗
+    Popover.prototype.close = function(){
+        var pop = this.ele;
+        var overlay = this.overlay;
+        document.body.removeChild(pop);
+        document.body.removeChild(overlay);
+    }
+    window.onload = function(){
+        var pop1 = new Popover({width:500,height:300,title:'亚洲气质舞王',overlay:0.1,content:'尼古拉斯-赵四'});
+        pop1.init();
+
+        var lp = new LeftPop();
+        lp.init();
+
+        var rp = new RightPop();
+        rp.init();
+    }
+
+    // 左下角弹窗
+    function LeftPop(){
+        var defaults = {
+            title:false,//不显示标题
+            overlay:false,
+            position:'lb',
+            drag:false,
+            width:180
+        }
+        // 继承Popover的属性
+        Popover.call(this,defaults);
+    }
+    // 继承方法
+    LeftPop.prototype = Object.create(Popover.prototype);
+    // 重置关闭效果
+    LeftPop.prototype.close = function(){
+        var pop = this.ele;
+        
+
+        var timer = setInterval(function(){
+            var bottom = parseInt(pop.style.bottom);
+
+            // 弹窗移除边界后移除，并清除定时器
+            if(bottom < -pop.offsetHeight){
+                clearInterval(timer);
+                document.body.removeChild(pop);
+                return;
+            }
+            pop.style.bottom = bottom - 5 + 'px';
+        },20)
+    }
+
+    function RightPop(){
+        LeftPop.call(this);
+        this.position = 'rb';
+    }
+    RightPop.prototype = Object.create(LeftPop.prototype);
+    
+    </script>
+</head>
+
+<body>
+    <!-- <div class="popover">
+        <div class="title">弹窗标题</div>
+        <div class="content">弹窗内容</div>
+        <div class="footer">
+            <button class="ok">确认</button>
+            <button class="close">关闭</button>
+        </div>
+        <span class="btn-close">&times;</span>
+    </div> -->
+    <!-- <div class="overlay"></div> -->
+</body>
+
+</html>

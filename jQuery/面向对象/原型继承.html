@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>原型继承</title>
+	<script>
+		/*
+			借用构造函数继承方式
+				1)call
+				2)apply
+
+				作用：
+					1）复制构造函数内的属性
+					2）改变构造函数内的this指向
+
+			函数执行方式
+				1）手动调用：fn()
+				2）事件调用：绑定事件
+				3）new :创建实例
+				4）call/apply
+		 */
+		function Richman(name,age){
+			this.name = name;
+			this.age = age;
+			this.money = '反正很多钱';
+		}
+		//Richman(); ==> this==window
+		//new Richman() ==> this==实例（new Richman()）
+		//Richman.call(this) ==> this==this(hm1/new HandsomeMan())
+
+		Richman.prototype.show = function(){
+			console.log('大家好，我叫'+this.name+'，我爸是首富~~');
+		}
+
+		function HandsomeMan(name,age){
+			//Richman.call(this,name,age);
+			Richman.apply(this,arguments);
+			this.type = '颜值高';
+		}
+		HandsomeMan.prototype.getName = function(){
+			console.log(this.name);
+		}
+		var hm1 = new HandsomeMan('老谢',18,'男',false);
+
+		HandsomeMan.prototype = new Richman();
+		var hm2 = new HandsomeMan('老王',40);
+		
+		console.log(hm1);
+
+		// 需求：HandsomeMan继承Richman的原型对象中的方法
+		hm2.show()
+
+	</script>
+</head>
+<body>
+	
+</body>
+</html>

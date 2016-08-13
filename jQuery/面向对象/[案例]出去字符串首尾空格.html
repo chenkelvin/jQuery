@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>出去首尾空格</title>
+	<style>
+		#box{border:1px solid #ddd;padding:15px;background-color:#efefef;}
+		.hide{display:none;}
+	</style>
+	<script>
+	window.onload = function(){
+		// 获取页面元素
+		var btnTrim = document.getElementById('btnTrim');
+		var keyword = btnTrim.previousElementSibling;
+		var output = btnTrim.nextElementSibling;
+
+		// 点击按钮式去除输入字符的首尾空格
+		btnTrim.onclick = function(){
+			var _keyword = keyword.value;
+
+			// 面向过程
+			// var str = trim(_keyword);
+
+			// 面向对象
+			var str = _keyword.trim();
+
+			output.value = str;
+		}
+
+		// 
+		String.prototype.trim = function(){
+			var reg = /^\s+|\s+$/g;
+			return this.replace(reg,'');
+		}
+
+
+		// 封装去除首尾空格函数
+		function trim(str){
+			var reg = /^\s+|\s+$/g;
+			str = str.replace(reg,'');
+			return str;
+		}
+	}
+	</script>
+</head>
+<body>
+	<input type="text">
+	<button id="btnTrim">出去首尾空格</button>
+	<input id="output">
+</body>
+</html>

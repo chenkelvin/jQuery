@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>面向对象的显示隐藏</title>
+	<style>
+		#box{border:1px solid #ddd;padding:15px;background-color:#efefef;}
+		.hide{display:none;}
+	</style>
+	<script>
+		/*
+			显示隐藏效果
+				1)给#btn绑定点击事件
+					根据#box的显示状态进行切换，实现显示隐藏的效果
+
+		 */
+		window.onload = function(){
+			var btn = document.getElementById('btn');
+			var box = document.getElementById('box');
+			
+			// 1)给#btn绑定点击事件
+			/*btn.onclick = function(){
+				// 如果显示就隐藏，如果隐藏就显示
+				if(box.style.display == 'none'){
+					box.style.display = 'block';
+				}else{
+					box.style.display = 'none';
+				}
+			}*/
+
+			// 面向对象的显示隐藏
+			// 把一切东西都看作对象
+			// 对象：具有各种属性/方法
+			// 格式：对象.属性/对象.方法()
+			function Element(id){
+				this.ele = document.getElementById(id);
+				// 是否显示状态
+				this.isShow = true;
+			}
+
+			// 把方法写到原型对象
+			Element.prototype.show = function(){
+				// 这里的this依然表示实例oBox
+				this.ele.style.display = 'block';
+				this.isShow = true;
+				btn.innerHTML = '隐藏';
+			};
+			Element.prototype['hide'] = function(){
+				this.ele.style.display = 'none';
+				this.isShow = false;
+				btn.innerHTML = '显示'
+			};
+
+			// 匈牙利命名法
+			var oBox = new Element('box');
+
+			btn.onclick = function(){
+				if(oBox.isShow){
+					oBox.hide();
+				}else{
+					oBox.show();
+				}
+			}
+		}
+		
+	</script>
+</head>
+<body>
+	<div id="box">#box</div>
+	<button id="btn">显示隐藏</button>
+</body>
+</html>

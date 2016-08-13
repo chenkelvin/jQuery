@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>创建对象</title>
+	<script>
+		/*
+			自定义构造函数
+				1)首字母大写
+
+		*/
+		/* 
+			1> 创建一个新对象；
+			2> 将构造函数的作用域赋给新对象（把this绑定到实例对象）；
+			3> 执行构造函数中的代码（为这个新对象添加属性）；
+			4> 返回新对象。
+		*/
+		function Student(name,age,gender,sex){
+			// var o = {}
+			this.name = name;
+			this.age = age;
+			this.gender = gender;
+			this.sex = sex;
+
+			// return o
+		}
+
+		var stu1 = new Student('罗棋',16,'男',true);
+		console.log(stu1);
+	</script>
+</head>
+<body>
+	
+</body>
+</html>

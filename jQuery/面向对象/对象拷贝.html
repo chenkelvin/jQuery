@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<script>
+		/*
+			for..in循环
+				用于对象的遍历
+			格式：
+				var o = {name:'张飞',age:18,nickname:'张三'}	
+				for(var attr in o){
+					//attr表示遍历过程中的每一个属性名
+				}
+
+			for循环
+				一般用于数组的遍历
+			格式：for(var i=0;i<arr.length;i++){
+	
+			}
+
+			ES5的方法: forEach
+			格式:
+				var arr = [1,2,3,5];
+				arr.forEach(function(item,idx){
+	
+				});
+		 */
+		var obj = {name:'王大锤',age:40,hobby:{a:1,b:2,c:3}};
+		var test = obj;
+
+		test.name = '王晓锤';
+
+		// console.log(obj.name);
+
+		var obj2 = extend(obj);
+
+		function extend(obj,deep){
+			/*
+				1）只传入一个参数
+					复制对象
+				2）传入两个对象
+					合并两个对象，后面覆盖前面同名属性
+				3）深度拷贝
+			 */
+			
+			// 输出结果对象
+			var target = {};
+			// 遍历过程中的属性
+			var attr;
+			// 遍历过程的临时变量,保存属性值
+			var val;
+
+			// 如果传入两个对象（即deep也是一个对象），则扩展第一个对象
+			if(typeof(deep) === 'object'){
+				target = obj;
+				obj = deep;
+				deep = arguments[2];
+			}
+			for(attr in obj){
+				val = obj[attr];
+
+				// 要扩展的原属性值
+				targetVal = target[attr];
+
+				// 深度拷贝
+				if(deep && typeof(val) == 'object'){
+					val = extend(val);
+				}
+
+				// 如果原来已经是一个对象，则扩展这个对象,否则直接覆盖原值
+				if(typeof(targetVal) === 'object'){
+				 	target[attr]= extend(targetVal,val);
+				}else{
+					target[attr] = val;
+				}
+			}
+			return target;
+		}
+	</script>
+</head>
+<body>
+	
+</body>
+</html>

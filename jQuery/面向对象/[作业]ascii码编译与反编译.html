@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>ascii码的编译反编译</title>
+	<script>
+		/*
+			封装两个方法
+				1）给String的原型对象添加toAscii方法
+					把字符串转换成ascii码
+				2）给String的原型对象添加fromAscii方法
+					把ascii码转换成对应的字符
+		 */
+		String.prototype.toAscii = function(){
+			var res = '';
+			for(var i=0;i<this.length;i++){
+				res += this.charCodeAt(i) + ',';
+			}
+			// res.substring(0,this.length-1);
+			return res.slice(0,-1);//slice:字符串截取，支持负数（从后王往前数）
+		}
+
+		String.prototype.fromAscii = function(){
+			var res = '';
+			var arr = this.split(',');
+			for(var i=0;i<arr.length;i++){
+				res += String.fromCharCode(arr[i]);
+			}
+			return res;
+		}
+		// var str = new String('abc');//实例
+
+		// 'abc'.toAscii();//97,98,99
+		// '97,98,99'.fromAscii();//abc
+	</script>
+</head>
+<body>
+</body>
+</html>

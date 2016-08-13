@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>创建对象</title>
+	<script>
+		/*
+			对象
+				属性：这个对象有什么
+				方法：这个对象能做什么
+		 */
+		// var obj = {name:'gz1603',type:'html5开发'}; //直接量
+		var obj = new Object();	//原生构造函数，Date,Array,String,Number,Boolean
+		obj.name = 'gz1603'; 
+		obj['type'] = 'html5开发';
+		obj.dev = function(){
+			console.log('我能做开发')
+		}
+
+		// 取值
+		console.log('name属性：',obj.name); //==>gz1603
+
+		// 执行
+		obj.dev();
+
+
+		// 创建对象示例
+		var stu1 = {
+			name:'罗棋',
+			age:16,
+			gender:'男',
+			sex:true
+		};
+		var stu2 = {
+			name:'商乐园',
+			age:35,
+			gender:'男',
+			sex:false
+		};
+		var stu3 = {
+			name:'黄海涛',
+			age:18,
+			gender:'女',
+			sex:true
+		};
+
+
+		// 3.封装
+		function createStu(name,age,gender,sex){
+			var o = {};
+			o.name = name;
+			o.age = age;
+			o.gender = gender;
+			o.sex = sex;
+			
+			return o;
+		}
+
+		// 测试驱动开发
+		var stu1 = createStu('罗棋',16,'男',true);
+		var stu2 = createStu('商乐园',35,'男',false);
+		var stu3 = createStu('黄海涛',18,'女',true);
+	</script>
+</head>
+<body>
+	
+</body>
+</html>

@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>重置原型对象</title>
+	<script>
+		function Person(name,gender,age,geyan){
+			this.name = name;
+			this.age = age;
+			this.gender = gender;
+			this.geyan = geyan;
+		}
+
+		Person.prototype.say = function(){
+			console.log('我叫'+this.name + ','+this.gender+',今年'+this.age + ',我的人生格言：' + this.geyan);
+		}
+		var p1 = new Person('老谢','男',18,'作业还是太少~~');
+
+		Person.prototype = {
+			constructor:Person,//有括号表示执行，没括号表示引用
+			getName:function(){
+				console.log(this.name)
+			},
+			getGeyan:function(){
+				console.log(this.geyan);
+			}
+		}
+
+		
+		var p2 = new Person('老王','男',40,'你有困难我帮忙，我住隔壁我姓王!');
+		console.log(p1.name)
+
+	</script>
+</head>
+<body>
+	
+</body>
+</html>

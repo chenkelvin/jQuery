@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>闭包</title>
+	<script>
+		// 正常函数执行
+		/*function output(){
+			var res = 10;
+			console.log(res);
+		}
+		output();
+		console.log(res);*/
+
+		// 闭包函数
+		function output(){
+			var res = 10;
+			return function(){
+				console.log(res++);
+			}
+		}
+
+		// output()();
+		// output()();
+
+		var fn = output();
+		fn();
+		fn();
+		fn();
+	</script>
+</head>
+<body>
+	
+</body>
+</html>
